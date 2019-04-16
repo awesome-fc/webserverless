@@ -1,6 +1,6 @@
 {
   "name": "@webserverless/cli",
-  "version": "0.1.0-next.b7aa8011",
+  "version": "0.0.1",
   "description": "Webserverless CLI.",
   "publishConfig": {
     "access": "public"

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@webserverless/ext-scripts",
-  "version": "0.1.0-next.b7aa8011",
+  "version": "0.0.1",
   "license": "MIT",
   "description": "NPM scripts for webserverless packages.",
   "files": [
