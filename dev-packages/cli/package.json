@@ -17,7 +17,8 @@
   "files": [
     "bin",
     "lib",
-    "src"
+    "src",
+    "templates"
   ],
   "bin": {
     "webserverless": "./bin/webserverless",
