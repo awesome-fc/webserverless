@@ -21,8 +21,8 @@
     "build": "tsc",
     "watch": "tsc -w"
   },
-  "tegotherExtension": {
+  "webserverlessExtension": {
     "frontend": "lib/browser/{{ projectName }}-frontend-module",
-    "backend": "lib/browser/{{ projectName }}-backend-module"
+    "backend": "lib/node/{{ projectName }}-backend-module"
   }
 }
