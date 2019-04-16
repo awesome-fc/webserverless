@@ -41,16 +41,18 @@
     "wdio-selenium-standalone-service": "0.0.12",
     "wdio-spec-reporter": "0.1.5",
     "webdriverio": "4.14.1",
-    "@webserverless/cli": "^0.0.0"
+    "@webserverless/cli": "^0.0.1",
+    "@webserverless/ext-scripts": "^0.0.1"
   },
   "scripts": {
-    "build": "run build",
-    "build:clean": "run prepare",
-    "docs": "run docs \"@webserverless/!(example-)*\"",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "build:clean": "lerna run prepare",
+    "docs": "lerna run docs \"@webserverless/!(example-)*\"",
     "test": "yarn test:webserverless",
-    "test:webserverless": "run test \"@webserverless/!(example-)*\" --stream --concurrency=1",
+    "test:webserverless": "lerna run test --scope \"@webserverless/!(example-)*\" --parallel",
     "watch": "lerna run watch --scope \"@webserverless/!(example-)*\" --parallel",
-    "publish": "yarn && yarn test && yarn publish:latest",
+    "publish": "yarn && yarn test && lerna publish",
     "next:publish": "lerna publish --exact --canary=next --npm-tag=next --yes"
   },
   "workspaces": [
