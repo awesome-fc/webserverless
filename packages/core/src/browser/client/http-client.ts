@@ -4,7 +4,7 @@ import { Context } from '../jsonrpc/service-dispatcher';
 import { ConfigProvider } from '../../common/config-provider';
 import { DEFALUT_SERVICE, defaultServicePath, DEFALUT_FUNCTION, ServicePath } from './fc-client';
 
-export const URL_PREFIX = 'to.httpClient.urlPrefix';
+export const URL_PREFIX = 'httpClient.urlPrefix';
 
 @injectable()
 export class HttpClient implements Client {

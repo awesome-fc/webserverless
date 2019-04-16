@@ -16,8 +16,8 @@ export const defaultServicePath = {
     function: 'webserverless'
 };
 
-export const DEFALUT_SERVICE = 'to.fcClient.defalutService';
-export const DEFALUT_FUNCTION = 'to.fcClient.defalutFunction';
+export const DEFALUT_SERVICE = 'fcClient.defalutService';
+export const DEFALUT_FUNCTION = 'fcClient.defalutFunction';
 
 @injectable()
 export class FCClient implements Client {

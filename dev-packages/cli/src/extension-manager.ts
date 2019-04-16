@@ -33,7 +33,7 @@ export class ExtensionManager {
     collectExtension(): Promise<Extension[]> {
         const root = process.cwd();
         return new Promise((resolve, reject) => {
-            find.file(/package.json/, root, (files: string[]) => {
+            find.file(/^(?!.*(-tpl)).*package.json$/, root, (files: string[]) => {
                 const extensions = [];
                 for (const file of files) {
                     try {

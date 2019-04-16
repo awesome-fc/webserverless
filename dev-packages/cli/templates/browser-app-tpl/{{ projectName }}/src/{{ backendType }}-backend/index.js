@@ -1,7 +1,7 @@
 // @ts-check
 require('reflect-metadata');
 const { Container } = require('inversify');
-const { CoreBackendModule, HttpContext } = require('@webserverless/core/lib/node');
+const { CoreBackendModule, {{ contextType }} } = require('@webserverless/core/lib/node');
 const { Dispatcher } = require('@webserverless/core/lib/common/jsonrpc/dispatcher-protocol');
 
 const container = new Container();
@@ -25,18 +25,7 @@ module.exports.init = async (context, callback) => {
   }
 };
 
-
-module.exports.handler = function (request, response, context) {
+module.exports.handler = (request, response, context) => {
   const dispatcher = container.get(Dispatcher);
-  dispatcher.dispatch(new HttpContext(request, response, context))
+  dispatcher.dispatch(new {{ contextType }}(request, response, context));
 };
-// (JSON.stringify({
-//     "id": 2,
-//     "kind": "data",
-//     "path": "/services/helloworld",
-//     "content": JSON.stringify({
-//         "id": 1,
-//         "method": "say"
-//     })
-// }), {}, (err, data) => console.log(data));
-

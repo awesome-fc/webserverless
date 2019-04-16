@@ -19,12 +19,17 @@ program
 (async () => {
     const frontend = program.frontend || !program.backend;
     const backend = program.backend || !program.frontend;
+    const contextMap: any = {
+        'http': 'HttpContext',
+        'sdk': 'EventContext',
+        'api-getway-backend': 'ApiGatewayContext'
+    }
 
     const extensionManager = new ExtensionManager();
     const extensions = await extensionManager.collectExtension();
 
     const profile = await getProfile();
-    const configPath = path.resolve(process.cwd(), 'webserverless.config.json');
+    const configPath = path.resolve(process.cwd(), '../webserverless.config.json');
     const config = fs.existsSync(configPath) ? require(configPath) : {};
     const appName = 'browser-app';
     
@@ -34,7 +39,7 @@ program
         outputDir: '.',
         merge: true,
         input: true,
-        vars: { extensions, backendType: program.backendType, profile, config, Extension, appPath: path.resolve(process.cwd(), appName) }
+        vars: { extensions, backendType: program.backendType, contextType: contextMap[program.backendType],  profile, config, Extension, appPath: path.resolve(process.cwd(), appName) }
     };
     await init(context);
     if (!frontend) {

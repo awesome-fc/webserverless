@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { HelloWorldServer } from '../common/hello-word-protocol';
+import { HelloWorldServer } from '../common/hello-world-protocol';
 
 @injectable()
 export class HelloWorldServerImpl implements HelloWorldServer {

@@ -26,8 +26,12 @@ export abstract class AbstractErrorHandler implements ErrorHandler {
 
     async handle(ctx: Context, err: Error): Promise<void> {
         const responseMessage = await this.getErrorRespanseMessage(ctx, err);
-        const channel = await this.channelManager.getChannel(ctx);
-        channel.send(JSON.stringify(responseMessage));
+        try {
+            const channel = await this.channelManager.getChannel(ctx);
+            channel.send(JSON.stringify(responseMessage));
+        } catch (error) {
+            ctx.getCallback()(error, undefined);
+        }
         await this.doHandle(ctx, err);
     }
 

@@ -26,13 +26,16 @@ export class ChannelManager {
             if (!channel) {
                 this.callbacks.set(id, ctx.getCallback());
                 channel = this.createChannel(id, (err, data) => this.callbacks.get(id)!(err, data));
-
                 const handler = this._handlers.get(this.getRealPath(path));
                 if (handler) {
-                    handler.onConnection(this.connnectionFactory.create(channel, new ConsoleLogger()));
-                    this.channels.set(id, channel);
+                    try {
+                        handler.onConnection(this.connnectionFactory.create(channel, new ConsoleLogger()));
+                        this.channels.set(id, channel);
+                    } catch (err) {
+                        return Promise.reject(err);
+                    }
                 } else {
-                    throw new Error('Cannot find a service for the path: ' + path);
+                    return Promise.reject(new Error('Cannot find a service for the path: ' + path));
                 }
             } else {
                 this.callbacks.set(id, ctx.getCallback());

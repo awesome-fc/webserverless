@@ -23,7 +23,7 @@ export const CoreBackendModule = new ContainerModule(bind => {
     bind(ConnnectionFactory).to(ConnnectionFactoryImpl).inSingletonScope();
     bind(ConnectionHandler).toDynamicValue(ctx =>
         new JsonRpcConnectionHandler(stsPath, () => {
-            const stsServer = ctx.container.get<STSServer>(STSServerImpl);
+            const stsServer = ctx.container.get<STSServer>(STSServer);
             return stsServer;
         })
     ).inSingletonScope();

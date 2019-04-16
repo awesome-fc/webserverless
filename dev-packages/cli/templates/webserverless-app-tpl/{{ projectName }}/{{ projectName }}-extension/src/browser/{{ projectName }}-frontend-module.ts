@@ -1,8 +1,8 @@
 import { ContainerModule } from 'inversify';
 import { ProxyProvider } from '@webserverless/core/lib/browser/jsonrpc/proxy-provider';
-import { HelloWorldServer, helloWorldPath } from '../common/hello-word-protocol';
+import { HelloWorldServer, helloWorldPath } from '../common/hello-world-protocol';
 
-export const CoreFrontendModule = new ContainerModule(bind => {
+export default new ContainerModule(bind => {
 
     bind(HelloWorldServer).toDynamicValue(ctx => {
         const provider = ctx.container.get(ProxyProvider);

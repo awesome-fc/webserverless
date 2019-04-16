@@ -1,16 +1,17 @@
 import { Config } from '@webserverless/fc-browser-sdk/lib/browser';
 import * as Client from '@alicloud/pop-core';
 import { ConfigProvider } from '../../common/config-provider';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Context } from '../jsonrpc/context';
 import { STSServer } from '../../common/sts';
 
+@injectable()
 export class STSServerImpl implements STSServer {
 
     @inject(ConfigProvider)
     protected readonly configProvider: ConfigProvider;
     async getConfig(roleArn?: string, roleSessionName?: string): Promise<Config> {
-        const ctx = Context.getCurrent<Context>().innerContext();
+        const ctx = Context.getCurrent<Context>().innerContext;
         const accountId = ctx.accountId;
         if (roleArn) {
             const client = new Client({

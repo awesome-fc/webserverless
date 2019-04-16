@@ -96,12 +96,16 @@ export class DispatcherImpl implements Dispatcher<Context> {
         @inject(ErrorHandlerProvider) protected errorHandlerProvider: ErrorHandlerProvider,
         @inject(ConnnectionFactory) protected connnectionFactory: ConnnectionFactory<Channel>
 
-    ) {
-     }
+    ) {}
 
     async dispatch(ctx: Context): Promise<void> {
         try {
-            ctx.message = JSON.parse(await ctx.getEvent());
+            try {
+                const body = await ctx.getEvent();
+                ctx.message = JSON.parse(body);
+            } catch (err) {
+                ctx.getCallback()(new Error('Request data format error: ' + err), undefined);
+            }
             Context.setCurrent(ctx);
             const middleware = this.compose();
             await middleware(ctx, {
