@@ -1,6 +1,6 @@
 {
   "name": "@webserverless/fc-browser-sdk",
-  "version": "0.1.0-next.cfe4ef84",
+  "version": "0.1.0-next.b7aa8011",
   "description": "",
   "main": "lib/browser/index.js",
   "typings": "lib/browser/index.d.ts",
@@ -36,7 +36,7 @@
     "docs": "webserverlessext docs"
   },
   "devDependencies": {
-    "@webserverless/ext-scripts": "0.1.0-next.cfe4ef84"
+    "@webserverless/ext-scripts": "0.1.0-next.b7aa8011"
   },
   "nyc": {
     "extends": "../../configs/nyc.json"
