@@ -1,5 +1,5 @@
 # {{ projectName }}-extension
-The example of how to build the Webserverless-based applications with the {{ proejectName }}-extension.
+The example of how to build the Webserverless-based applications with the {{ projectName }}-extension.
 
 ## Getting started
 
