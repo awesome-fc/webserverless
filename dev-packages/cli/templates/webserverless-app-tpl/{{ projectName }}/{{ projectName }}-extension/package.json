@@ -22,7 +22,7 @@
     "watch": "tsc -w"
   },
   "webserverlessExtension": {
-    "frontend": "lib/browser/{{ projectName }}-frontend-module",
-    "backend": "lib/node/{{ projectName }}-backend-module"
+    "frontends": "lib/browser/{{ projectName }}-frontend-module",
+    "backends": "lib/node/{{ projectName }}-backend-module"
   }
 }

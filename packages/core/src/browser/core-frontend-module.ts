@@ -1,6 +1,5 @@
 import { ContainerModule } from 'inversify';
 import { ProxyProvider } from './jsonrpc/proxy-provider';
-import { HelloWorldServer, helloWorldPath } from '../common/hello-world/hello-word-protocol';
 import { ConnnectionFactory, ConnnectionFactoryImpl } from '../common/jsonrpc/connection-factory';
 import { Dispatcher } from '../common/jsonrpc/dispatcher-protocol';
 import { ServiceDispatcher } from './jsonrpc/service-dispatcher';
@@ -20,11 +19,6 @@ export const CoreFrontendModule = new ContainerModule(bind => {
     bind(ConnnectionFactory).to(ConnnectionFactoryImpl).inSingletonScope();
     bind(ProxyProvider).toSelf().inSingletonScope();
     bind(ConfigProvider).to(ConfigProviderImpl).inSingletonScope();
-
-    bind(HelloWorldServer).toDynamicValue(ctx => {
-        const provider = ctx.container.get(ProxyProvider);
-        return provider.createProxy<HelloWorldServer>(helloWorldPath);
-    }).inSingletonScope();
 
     bind(STSServer).toDynamicValue(ctx => {
         const provider = ctx.container.get(ProxyProvider);
