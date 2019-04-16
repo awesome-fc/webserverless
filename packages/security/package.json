@@ -1,0 +1,53 @@
+{
+  "name": "@webserverless/security",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/common/index.js",
+  "typings": "lib/common/index.d.ts",
+  "dependencies": {
+    "@webserverless/core": "^0.0.0",
+    "@types/jsonwebtoken": "^8.3.2",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "webserverlessExtension": {
+    "frontends": [
+      "lib/browser/security-frontend-module"
+    ],
+    "backends": [
+      "lib/node/security-backend-module"
+    ]
+  },
+  "keywords": [
+    "webserverless-extension"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muxiangqiu/webserverless.git"
+  },
+  "bugs": {
+    "url": "https://github.com/muxiangqiu/webserverless/issues"
+  },
+  "homepage": "https://github.com/muxianqqiu/webserverless",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "webserverlessext clean",
+    "build": "webserverlessext build",
+    "watch": "webserverlessext watch",
+    "test": "webserverlessext test",
+    "docs": "webserverlessext docs"
+  },
+  "devDependencies": {
+    "@webserverless/ext-scripts": "^0.0.0"
+  },
+  "nyc": {
+    "extends": "../../configs/nyc.json"
+  }
+}

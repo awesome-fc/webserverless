@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "{{ projectName }}",
+  "version": "0.0.0",
+  "engines": {
+    "yarn": "1.0.x || >=1.2.1",
+    "node": ">=8.9.3"
+  },
+  "dependencies": {
+    {{ Extension.generateDeps(extensions) }}
+  },
+  "scripts": {
+    "prepare": "",
+    "clean": "",
+    "watch": "yarn watch",
+    "build": "yarn build:backend && yarn build:frontend",
+    "build:backend": "webpack --config webpack.backend.config.js",
+    "build:frontend": "webpack --config webpack.frontend.config.js",
+    "deploy": "webserverless deploy",
+    "start": "webpack-dev-server -d --config webpack.frontend.config.js --mode development --open"
+  },
+  "devDependencies": {
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.2.1",
+    "source-map-loader": "^0.2.4",
+    "webpack-merge": "^4.1.4",
+    "@webserverless/cli": "next"
+  }
+}

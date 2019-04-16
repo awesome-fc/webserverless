@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "prepare": "lerna run prepare",
+    "build": "webserverless build"
+  },
+  "devDependencies": {
+    "lerna": "2.4.0"
+  },
+  "workspaces": [
+    "{{ projectName }}-extension", "browser-app"
+  ]
+}
