@@ -12,8 +12,6 @@ export interface Client {
 @injectable()
 export class ClientProvider {
 
-    protected prioritized: Client[];
-
     constructor(
         @multiInject(Client)
         protected readonly clients: Client[]
