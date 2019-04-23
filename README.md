@@ -1,6 +1,6 @@
 # WebServerless
 
-Severless based web development framework.
+Serverless based web development framework.
 
 ## Getting Started
 
