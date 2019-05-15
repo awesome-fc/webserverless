@@ -7,9 +7,12 @@ const { mode } = yargs.option('mode', {
   default: 'production'
 }).argv;
 const outputPath = path.resolve(__dirname, 'dist');
+const configPath = path.resolve(__dirname, '../webserverless.config.json');
+const config = fs.existsSync(configPath) ? require(configPath) : { backendType: 'http', frontendType: 'local'};
 
 module.exports = {
   mode: mode,
+  config,
   devtool: mode === 'development' ? 'inline-source-map' : undefined,
   module: {
     rules: [

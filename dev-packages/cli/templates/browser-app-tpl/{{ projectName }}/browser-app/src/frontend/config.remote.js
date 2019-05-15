@@ -1,0 +1,2 @@
+window['endpoint'] = '{{ config.remoteEndpoint }}';
+

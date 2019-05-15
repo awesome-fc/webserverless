@@ -3,16 +3,15 @@ require('es6-promise/auto');
 require('reflect-metadata');
 const { Container } = require('inversify');
 const { CoreFrontendModule } = require('@webserverless/core/lib/browser');
-const { URL_PREFIX } = require('@webserverless/core/lib/browser/client/http-client');
-const { DEFALUT_FUNCTION, DEFALUT_SERVICE } = require('@webserverless/core/lib/browser/client/fc-client');
+const { CONFIG } = require('@webserverless/core/lib/common/config-provider');
+const configPath = '../../../webserverless.config.json'
+const config = require(configPath);
 const { STSServer } = require('@webserverless/core/lib/common/sts/sts-protocol');
 
 const container = new Container();
 container.load(CoreFrontendModule);
-
-window[URL_PREFIX] = '{{ config.httpClient && config.httpClient.urlPrefix ? config.httpClient.urlPrefix : `https://${profile.accountId}.${profile.defaultRegion}.fc.aliyuncs.com/2016-08-15/proxy` }}';
-window[DEFALUT_SERVICE] = '{{ config.fcClient ? config.fcClient.defalutService : "" }}';
-window[DEFALUT_FUNCTION] = '{{ config.fcClient ? config.fcClient.defalutFunction : "" }}';
+config.endpoint = window['endpoint'];
+window[CONFIG] = config;
 // const helloWorldServer = container.get(HelloWorldServer);
 
 // helloWorldServer.say().then(data => console.log(alert(data)));

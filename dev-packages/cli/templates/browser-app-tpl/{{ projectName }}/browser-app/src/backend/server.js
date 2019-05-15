@@ -1,5 +1,5 @@
 const express = require('express');
-const func = require('./index');
+const func = require('./http-index');
 
 const server = express();
 

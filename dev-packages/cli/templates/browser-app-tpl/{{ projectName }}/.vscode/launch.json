@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Backend",
-            "program": "${workspaceFolder}/browser-app/src/{{ backendType }}-backend/{{ backendType }}-server.js"
+            "program": "${workspaceFolder}/{{ appName }}/src/backend/server.js"
         }
     ]
 }

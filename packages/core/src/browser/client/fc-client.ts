@@ -1,5 +1,5 @@
 import { Client } from './client-provider';
-import { Client as InnerClient } from '@webserverless/fc-browser-sdk/lib/browser';
+import { Client as InnerClient } from '@webserverless/fc-browser-sdk/lib/browser/client';
 import { injectable, inject } from 'inversify';
 import { Context } from '../jsonrpc/service-dispatcher';
 import { STSServer } from '../../common/sts/sts-protocol';
@@ -10,14 +10,6 @@ export interface ServicePath {
     function: string
     path: string
 }
-
-export const defaultServicePath = {
-    service: 'webserverless-service',
-    function: 'webserverless'
-};
-
-export const DEFALUT_SERVICE = 'fcClient.defalutService';
-export const DEFALUT_FUNCTION = 'fcClient.defalutFunction';
 
 @injectable()
 export class FCClient implements Client {
@@ -61,26 +53,13 @@ export class FCClient implements Client {
     protected async parse(path: string): Promise<ServicePath> {
         const parts = path.split(':');
         parts.pop();
-        if (parts.length > 2) {
+        if (parts.length = 3) {
             return {
                 service: parts[0],
                 function: parts[1],
                 path: parts[2]
             };
-        } else if (parts.length > 1) {
-            return {
-                ...await this.doGetDefaultServicePath(),
-                ...{ function: parts[0], path: parts[1] }
-            };
-        } else {
-            return { ...await this.doGetDefaultServicePath(), ...{ path } };
         }
-    }
-
-    protected async doGetDefaultServicePath() {
-        return {
-            service: await this.configProvider.get<string>(DEFALUT_SERVICE, defaultServicePath.service),
-            function: await this.configProvider.get<string>(DEFALUT_FUNCTION, defaultServicePath.function),
-        };
+        throw new Error(`Path format is incorrect: ${path}`);
     }
 }

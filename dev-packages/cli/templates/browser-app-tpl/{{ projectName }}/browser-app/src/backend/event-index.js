@@ -1,7 +1,7 @@
 // @ts-check
 require('reflect-metadata');
 const { Container } = require('inversify');
-const { CoreBackendModule, {{ contextType }} } = require('@webserverless/core/lib/node');
+const { CoreBackendModule, EventContext } = require('@webserverless/core/lib/node');
 const { Dispatcher } = require('@webserverless/core/lib/common/jsonrpc/dispatcher-protocol');
 
 const container = new Container();
@@ -25,7 +25,7 @@ module.exports.init = async (context, callback) => {
   }
 };
 
-module.exports.handler = ({{ backendType === 'http' ? 'request, response, context' : 'event, context, callback'}}) => {
+module.exports.handler = (event, context, callback) => {
   const dispatcher = container.get(Dispatcher);
-  dispatcher.dispatch(new {{ contextType }}({{ backendType === 'http' ? 'request, response, context' : 'event, context, callback'}}));
+  dispatcher.dispatch(new EventContext(event, context, callback));
 };

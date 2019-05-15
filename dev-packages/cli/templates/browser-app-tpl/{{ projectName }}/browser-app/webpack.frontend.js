@@ -12,7 +12,7 @@ const { mode } = yargs.option('mode', {
 
 module.exports = merge(baseWebpackConfig, {
   entry: {
-    config: path.resolve(__dirname, `src/frontend/config.remote.js`),
+    config: path.resolve(__dirname, `src/frontend/config.${baseWebpackConfig.config.frontendType}.js`),
     app: path.resolve(__dirname, 'src/frontend/index.js')
   },
   target: 'web',

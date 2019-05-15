@@ -1,19 +1,19 @@
 ROSTemplateFormatVersion: '2015-09-01'
 Transform: 'Aliyun::Serverless-2018-04-03'
 Resources:
-  {{ config.fcClient && config.fcClient.defalutService ? config.fcClient.defalutService : 'webserverless-service' }}:
+  {{ config.defaultServiceName }}:
     Type: 'Aliyun::Serverless::Service'
     Properties:
       Description: 'Webserverless Backend'
-    {{ config.fcClient && config.fcClient.defalutFunction ? config.fcClient.defalutFunction : 'webserverless' }}:
+    {{ config.defaultFunctionName }}:
       Type: 'Aliyun::Serverless::Function'
       Properties:
         Handler: index.handler
         Initializer: index.init
         Runtime: nodejs8
-        CodeUri: '{{appPath}}/dist/{{backendType}}-backend'
+        CodeUri: '{{appPath}}/dist/backend'
       Events:
-        {{ config.fcClient && config.fcClient.defalutHttpTrigger ? config.fcClient.defalutHttpTrigger : 'http-webserverless' }}:
+        {{ config.defaultHttpTriggerName }}:
           Type: HTTP
           Properties:
             AuthType: ANONYMOUS
