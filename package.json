@@ -41,8 +41,8 @@
     "wdio-selenium-standalone-service": "0.0.12",
     "wdio-spec-reporter": "0.1.5",
     "webdriverio": "4.14.1",
-    "@webserverless/cli": "^0.0.2",
-    "@webserverless/ext-scripts": "^0.0.2"
+    "@webserverless/cli": "^0.0.3",
+    "@webserverless/ext-scripts": "^0.0.3"
   },
   "scripts": {
     "build": "lerna run build --scope \"@webserverless/!(example-)*\"",
