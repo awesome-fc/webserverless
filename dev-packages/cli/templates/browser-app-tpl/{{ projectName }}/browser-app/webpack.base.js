@@ -1,5 +1,6 @@
 const path = require('path');
 const yargs = require('yargs');
+const fs = require('fs');
 const webpack = require('webpack');
 const { mode } = yargs.option('mode', {
   description: "Mode to use",

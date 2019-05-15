@@ -9,10 +9,12 @@ const { mode } = yargs.option('mode', {
   choices: ['development', 'production'],
   default: 'production'
 }).argv;
+const config = baseWebpackConfig.config;
+delete baseWebpackConfig.config;
 
 module.exports = merge(baseWebpackConfig, {
   entry: {
-    config: path.resolve(__dirname, `src/frontend/config.${baseWebpackConfig.config.frontendType}.js`),
+    config: path.resolve(__dirname, `src/frontend/config.${config.frontendType}.js`),
     app: path.resolve(__dirname, 'src/frontend/index.js')
   },
   target: 'web',
