@@ -1,12 +1,11 @@
 const path = require('path');
 const yargs = require('yargs');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 const { mode } = yargs.option('mode', {
   description: "Mode to use",
   choices: ['development', 'production'],
   default: 'production'
 }).argv;
-const outputPath = path.resolve(__dirname, 'dist');
 const configPath = path.resolve(__dirname, '../webserverless.config.json');
 const config = fs.existsSync(configPath) ? require(configPath) : { backendType: 'http', frontendType: 'local'};
 
@@ -25,11 +24,8 @@ module.exports = {
     ]
   },
   plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, './template.yml'),
-        to: outputPath
-      }
-    ])
+    new webpack.DefinePlugin({
+        'process.env': JSON.stringify(config)
+    })
   ]
 };

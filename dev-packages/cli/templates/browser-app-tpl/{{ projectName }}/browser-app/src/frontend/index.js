@@ -4,8 +4,7 @@ require('reflect-metadata');
 const { Container } = require('inversify');
 const { CoreFrontendModule } = require('@webserverless/core/lib/browser');
 const { CONFIG } = require('@webserverless/core/lib/common/config-provider');
-const configPath = '../../../webserverless.config.json'
-const config = require(configPath);
+const config = process.env;
 const { STSServer } = require('@webserverless/core/lib/common/sts/sts-protocol');
 
 const container = new Container();

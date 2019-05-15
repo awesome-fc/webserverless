@@ -14,10 +14,10 @@
     "clean": "",
     "watch": "yarn watch",
     "build": "yarn build:backend && yarn build:frontend",
-    "build:backend": "webpack --config webpack.backend.config.js",
-    "build:frontend": "webpack --config webpack.frontend.config.js",
+    "build:backend": "webpack --config webpack.backend.js",
+    "build:frontend": "webpack --config webpack.frontend.js",
     "deploy": "webserverless deploy",
-    "start": "webpack-dev-server -d --config webpack.frontend.config.js --mode development --open"
+    "start": "webpack-dev-server -d --config webpack.frontend.js --mode development --open"
   },
   "devDependencies": {
     "webpack": "^4.14.0",
