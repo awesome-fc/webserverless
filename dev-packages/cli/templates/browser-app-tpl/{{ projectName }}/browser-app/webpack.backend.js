@@ -1,7 +1,7 @@
 const merge = require('webpack-merge');
 const path = require('path');
-const baseWebpackConfig = require('./webpack.base.config');
-const outputPath = path.resolve(__dirname, 'dist/{{ backendType }}-backend');
+const baseWebpackConfig = require('./webpack.base');
+const outputPath = path.resolve(__dirname, 'dist/http-backend');
 
 module.exports = merge(baseWebpackConfig, {
   entry: './src/{{ backendType }}-backend/index.js',

@@ -13,7 +13,7 @@ program
     .description('Build frontend or backend application.')
     .option('-f, --frontend [frontend]', 'build frontend application')
     .option('-b, --backend [backend]', 'build backend application')
-    .option('-t, --backendType [backendType]', 'build backend application type', /^(http|sdk|api-getway-backend)$/i, 'http')
+    .option('-t, --backendType [backendType]', 'build backend application type', /^(http|sdk|api-getway)$/i, 'http')
     .parse(process.argv);
 
 (async () => {
@@ -22,7 +22,7 @@ program
     const contextMap: any = {
         'http': 'HttpContext',
         'sdk': 'EventContext',
-        'api-getway-backend': 'ApiGatewayContext'
+        'api-getway': 'ApiGatewayContext'
     }
 
     const extensionManager = new ExtensionManager();
@@ -35,7 +35,6 @@ program
     
     const context = {
         location: path.resolve(__dirname, '../templates/browser-app-tpl'),
-        name: appName,
         outputDir: '.',
         merge: true,
         input: true,
@@ -44,11 +43,22 @@ program
     await init(context);
     if (!frontend) {
         rimraf(path.resolve(`./${appName}/src/frontend`));
-        rimraf(path.resolve(`./${appName}/webpack.frontend.config`));
+        rimraf(path.resolve(`./${appName}/webpack.frontend.local.js`));
+        rimraf(path.resolve(`./${appName}/webpack.frontend.remote.js`));
     }
     if (!backend) {
-        rimraf(path.resolve(`./browser-app/src/${program.backendType}-backend`));
-        rimraf(path.resolve(`./${appName}/webpack.backend.config`));
+        rimraf(path.resolve(`./${appName}/src/${program.backendType}-backend`));
+        rimraf(path.resolve(`./${appName}/webpack.backend.js`));
+    } else {
+        if (program.backendType !== 'http') {
+            rimraf(path.resolve(`./${appName}/src/http-backend/http-server.js`));
+        }
+        if (program.backendType !== 'sdk') {
+            rimraf(path.resolve(`./${appName}/src/sdk-backend/sdk-server.js`));
+        }
+        if (program.backendType !== 'api-gateway') {
+            rimraf(path.resolve(`./${appName}/src/api-gateway-backend/http-server.js`));
+        }
     }
 })();
 

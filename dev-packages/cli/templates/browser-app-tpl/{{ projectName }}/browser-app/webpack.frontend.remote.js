@@ -1,11 +1,20 @@
 const merge = require('webpack-merge');
 const path = require('path');
-const baseWebpackConfig = require('./webpack.base.config');
+const yargs = require('yargs');
+const baseWebpackConfig = require('./webpack.base');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const outputPath = path.resolve(__dirname, 'dist/frontend');
+const { mode } = yargs.option('mode', {
+  description: "Mode to use",
+  choices: ['development', 'production'],
+  default: 'production'
+}).argv;
 
 module.exports = merge(baseWebpackConfig, {
-  entry: './src/frontend/index.js',
+  entry: {
+    config: path.resolve(__dirname, `src/frontend/config.remote.js`),
+    app: path.resolve(__dirname, 'src/frontend/index.js')
+  },
   target: 'web',
   node: {
     fs: 'empty',
@@ -19,7 +28,7 @@ module.exports = merge(baseWebpackConfig, {
   },
   output: {
     path: outputPath,
-    filename: 'index.js'
+    filename: '[name].[chunkhash].js'
   },
   plugins: [
     new HtmlWebpackPlugin({

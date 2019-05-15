@@ -19,13 +19,13 @@ const loadPromise = Promise.resolve()
 module.exports.init = async (context, callback) => {
   try {
     await loadPromise;
-    callback(null, '')
+    callback(null, '');
   } catch (err) {
-    callback(err)
+    callback(err);
   }
 };
 
-module.exports.handler = (request, response, context) => {
+module.exports.handler = ({{ backendType === 'http' ? 'request, response, context' : 'event, context, callback'}}) => {
   const dispatcher = container.get(Dispatcher);
-  dispatcher.dispatch(new {{ contextType }}(request, response, context));
+  dispatcher.dispatch(new {{ contextType }}({{ backendType === 'http' ? 'request, response, context' : 'event, context, callback'}}));
 };
