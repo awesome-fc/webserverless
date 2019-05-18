@@ -45,6 +45,7 @@
     "@webserverless/ext-scripts": "^0.0.3"
   },
   "scripts": {
+    "prepare": "yarn run build:clean",
     "build": "lerna run build --scope \"@webserverless/!(example-)*\"",
     "clean": "lerna run clean",
     "build:clean": "lerna run prepare",

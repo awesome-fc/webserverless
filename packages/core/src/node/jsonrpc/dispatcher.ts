@@ -3,7 +3,7 @@ import { Context, Callback } from './context';
 import { inject, injectable } from 'inversify';
 import { Channel, ConnnectionFactory } from '../../common/jsonrpc';
 import { MiddlewareProvider, Middleware } from '../middleware';
-import * as getRowBody from 'raw-body';
+import * as getRawBody from 'raw-body';
 import { ErrorHandlerProvider } from './error-hander-provider';
 import { ChannelManager } from './channel-manager';
 
@@ -46,16 +46,8 @@ export class HttpContext extends Context {
         this.response = response;
     }
 
-    getEvent(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            getRowBody(this.request, (err, body) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(body.toString());
-                }
-            });
-        });
+    async getEvent(): Promise<string> {
+        return (await getRawBody(this.request)).toString();
     }
     getCallback(): Callback {
         return (err: Error, data: any) => {
