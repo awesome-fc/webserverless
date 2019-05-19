@@ -1,18 +1,22 @@
 import { Resolver, HttpTriggerContext } from './proxy-protocol';
 import * as url from 'url';
 import { AbstractProxy } from './abstract-proxy';
+import * as http from 'http';
 import * as getRawBody from 'raw-body';
 
 export class HttpTriggerProxy extends AbstractProxy<HttpTriggerContext> {
 
-    protected getBody(ctx: HttpTriggerContext): Promise<Buffer | undefined> {
-        return getRawBody(ctx.request);
+    protected pipeBody(ctx: HttpTriggerContext, req: http.ClientRequest): void {
+        getRawBody(ctx.request, (err, body) => {
+            req.write(body);
+            req.end();
+        });
     }
 
     protected getRequestHeaders(ctx: HttpTriggerContext) {
         const request = ctx.request;
         const headers = Object.assign({}, request.headers);
-        return Promise.resolve(headers);
+        return headers;
     }
 
     protected getHttpMethod(ctx: HttpTriggerContext): string {

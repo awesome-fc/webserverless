@@ -22,9 +22,9 @@ export abstract class AbstractProxy<T extends Context> implements Proxy<T> {
 
     protected abstract makeResolver(ctx: T): Resolver;
 
-    protected abstract getBody(ctx: T): Promise<Buffer | undefined>;
+    protected abstract pipeBody(ctx: T, req: http.ClientRequest): void;
 
-    protected abstract getRequestHeaders(ctx: T): Promise<any>;
+    protected abstract getRequestHeaders(ctx: T): any;
 
     protected abstract getHttpMethod(ctx: T): string;
 
@@ -34,24 +34,20 @@ export abstract class AbstractProxy<T extends Context> implements Proxy<T> {
         return response.headers;
     }
 
-    protected async forwardRequestToNodeServer(ctx: T) {
+    protected forwardRequestToNodeServer(ctx: T) {
         const resolver = this.makeResolver(ctx);
         try {
-            const requestOptions = await this.mapContextToHttpRequest(ctx);
+            const requestOptions = this.mapContextToHttpRequest(ctx);
             const req = http.request(requestOptions, response => this.forwardResponse(response, resolver));
-            const body = await this.getBody(ctx);
-            if (body) {
-                req.write(body);
-            }
-            req.on('error', error => this.forwardConnectionErrorResponse(error, resolver))
-                .end();
+            req.on('error', error => this.forwardConnectionErrorResponse(error, resolver));
+            this.pipeBody(ctx, req);
         } catch (error) {
             this.forwardLibraryErrorResponse(error, resolver);
         }
     }
 
-    protected async mapContextToHttpRequest(ctx: T) {
-        const headers = await this.getRequestHeaders(ctx);
+    protected mapContextToHttpRequest(ctx: T) {
+        const headers = this.getRequestHeaders(ctx);
         headers['x-fc-express-context'] = encodeURIComponent(JSON.stringify(ctx.context));
         return {
             method: this.getHttpMethod(ctx),

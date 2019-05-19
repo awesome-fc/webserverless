@@ -36,21 +36,28 @@ export class ApiGatewayProxy extends AbstractProxy<ApiGatewayContext> {
         return headers;
     }
 
-    protected getBody(ctx: ApiGatewayContext): Promise<Buffer | undefined> {
-        const event = ctx.event;
-        if (event.body) {
-            return Promise.resolve(Buffer.from(event.body, event.isBase64Encoded ? 'base64' : 'utf8'));
+    protected pipeBody(ctx: ApiGatewayContext, req: http.ClientRequest): void {
+        const body = this.getBody(ctx);
+        if (body) {
+            req.write(body);
+            req.end();
         }
-        return Promise.resolve(undefined);
     }
 
-    protected async getRequestHeaders(ctx: ApiGatewayContext) {
+    protected getBody(ctx: ApiGatewayContext): Buffer | undefined {
+        const event = ctx.event;
+        if (event.body) {
+            return Buffer.from(event.body, event.isBase64Encoded ? 'base64' : 'utf8');
+        }
+    }
+
+    protected getRequestHeaders(ctx: ApiGatewayContext) {
         const event = ctx.event;
         const headers = Object.assign({}, event.headers);
 
         // NOTE: API Gateway is not setting Content-Length header on requests even when they have a body
         if (event.body && !headers['Content-Length']) {
-            const body = await this.getBody(ctx);
+            const body = this.getBody(ctx);
             if (body) {
                 headers['Content-Length'] = body ? Buffer.byteLength(body) : 0;
             }

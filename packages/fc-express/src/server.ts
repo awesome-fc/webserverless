@@ -44,11 +44,11 @@ export class Server {
 
     proxy(event: any, context: any, callback: Callback) {
         const e = JSON.parse(event);
-        return this.apiGatewayProxy.handle({ event: e, context, callback });
+        this.apiGatewayProxy.handle({ event: e, context, callback });
     }
 
     httpProxy(request: any, response: any, context: any) {
-        return this.httpTriggerProxy.handle({ request, response, context });
+        this.httpTriggerProxy.handle({ request, response, context });
     }
 
     startServer () {
