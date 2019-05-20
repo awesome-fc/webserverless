@@ -40,8 +40,8 @@ export class ApiGatewayProxy extends AbstractProxy<ApiGatewayContext> {
         const body = this.getBody(ctx);
         if (body) {
             req.write(body);
-            req.end();
         }
+        req.end();
     }
 
     protected getBody(ctx: ApiGatewayContext): Buffer | undefined {
