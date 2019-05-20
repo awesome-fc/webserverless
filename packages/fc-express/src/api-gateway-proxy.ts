@@ -1,4 +1,4 @@
-import { ApiGatewayContext, Resolver } from './proxy-protocol';
+import { ApiGatewayContext, Resolver, EVENT_HEADER_NAME } from './proxy-protocol';
 import * as url from 'url';
 import * as http from 'http';
 import { AbstractProxy } from './abstract-proxy';
@@ -66,7 +66,7 @@ export class ApiGatewayProxy extends AbstractProxy<ApiGatewayContext> {
         const clonedEventWithoutBody = this.clone(event);
         delete clonedEventWithoutBody.body;
 
-        headers['x-fc-express-event'] = encodeURIComponent(JSON.stringify(clonedEventWithoutBody));
+        headers[EVENT_HEADER_NAME] = encodeURIComponent(JSON.stringify(clonedEventWithoutBody));
         return headers;
     }
 

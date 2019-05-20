@@ -1,4 +1,4 @@
-import { Proxy, Resolver, Context } from './proxy-protocol';
+import { Proxy, Resolver, Context, CONTEXT_HEADER_NAME } from './proxy-protocol';
 import { Server } from './server';
 import * as http from 'http';
 import * as isType from 'type-is';
@@ -48,7 +48,7 @@ export abstract class AbstractProxy<T extends Context> implements Proxy<T> {
 
     protected mapContextToHttpRequest(ctx: T) {
         const headers = this.getRequestHeaders(ctx);
-        headers['x-fc-express-context'] = encodeURIComponent(JSON.stringify(ctx.context));
+        headers[CONTEXT_HEADER_NAME] = encodeURIComponent(JSON.stringify(ctx.context));
         return {
             method: this.getHttpMethod(ctx),
             path: this.getPath(ctx),

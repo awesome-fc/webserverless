@@ -1,3 +1,6 @@
+export const EVENT_HEADER_NAME = 'x-fc-express-event';
+export const CONTEXT_HEADER_NAME = 'x-fc-express-context';
+
 export type Callback = (err?: Error, data?: any) => void;
 
 export type Resolver = (data?: any) => void;
