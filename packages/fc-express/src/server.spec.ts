@@ -69,10 +69,10 @@ describe('http trigger sever', function () {
             done();
         };
         fcHttpTriggerFunction.handler(ee, response, {});
-        setTimeout(() => {
+        process.nextTick(() => {
             ee.emit('data', Buffer.from('bar'));
             ee.emit('end');
-        }, 100);
+        });
     });
 
 });
