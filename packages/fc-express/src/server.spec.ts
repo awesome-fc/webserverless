@@ -19,7 +19,6 @@ class Response {
     }
 
     send(body?: string) {
-        console.log('ssssss');
         this.body = body;
     }
 }
@@ -130,6 +129,19 @@ describe('http trigger sever', function () {
         });
         fcHttpTriggerFunction(app).handler(request, response, context);
         send(request, 'bar');
+    });
+
+    it('should get body with req.body', function (done) {
+        const app = express();
+        const request = makeRequest();
+        const response = new Response();
+        const context = { foo: 'bar' };
+        app.post('/foo', async (req, res) => {
+            expect((await getRawBody(req)).toString()).equal('bar');
+            done();
+        });
+        request.body = 'bar';
+        fcHttpTriggerFunction(app).handler(request, response, context);
     });
 
 });

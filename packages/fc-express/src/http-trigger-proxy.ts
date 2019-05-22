@@ -7,10 +7,15 @@ import * as getRawBody from 'raw-body';
 export class HttpTriggerProxy extends AbstractProxy<HttpTriggerContext> {
 
     protected pipeBody(ctx: HttpTriggerContext, req: http.ClientRequest): void {
-        getRawBody(ctx.request, (err, body) => {
-            req.write(body);
+        if (ctx.request.body) {
+            req.write(ctx.request.body);
             req.end();
-        });
+        } else {
+            getRawBody(ctx.request, (err, body) => {
+                req.write(body);
+                req.end();
+            });
+        }
     }
 
     protected getRequestHeaders(ctx: HttpTriggerContext) {
