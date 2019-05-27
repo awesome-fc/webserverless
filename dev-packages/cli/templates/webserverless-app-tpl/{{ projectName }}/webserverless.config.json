@@ -5,6 +5,6 @@
     "defaultFunctionName": "webserverless",
     "defalutHttpTriggerName": "http-webserverless",
     "localEndpoint": "http://localhost:8080",
-    "remoteEndpoint":"https://{{ profile.accountId }}.{{ profile.defaultRegion }}.fc.aliyuncs.com/2016-08-15/proxy}}/webserverless-service/webserverless",
+    "remoteEndpoint":"https://{{ profile.accountId }}.{{ profile.defaultRegion }}.fc.aliyuncs.com/2016-08-15/proxy/webserverless-service/webserverless",
     "apiGatewayGroupName": "webserverless-group"
 }
