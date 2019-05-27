@@ -26,7 +26,7 @@ const proxy = require('@webserverless/fc-express')
 const express = require('express');
 
 const app = express();
-app.all(/.*/, (req, res) => {
+app.all('*', (req, res) => {
   res.send('hello world!');
 });
 
@@ -45,7 +45,7 @@ const proxy = require('@webserverless/fc-express')
 const express = require('express');
 
 const app = express();
-app.all(/.*/, (req, res) => {
+app.all('*', (req, res) => {
   res.send('hello world!');
 });
 
@@ -67,7 +67,7 @@ const express = require('express');
 const getRawBody = require('raw-body');
 
 const app = express();
-app.all(/.*/, (req, res) => {
+app.all('*', (req, res) => {
   res.send('hello world!');
 });
 
@@ -148,7 +148,7 @@ const proxy = require('@webserverless/fc-express')
 const express = require('express');
 const app = express();
 app.use(proxy.eventContext())
-app.all(/.*/, (req, res) => {
+app.all('*', (req, res) => {
   console.log(req.eventContext.event); // http 触发器方式，没有 event 对象
   console.log(req.eventContext.context);
   res.send('hello world!');
