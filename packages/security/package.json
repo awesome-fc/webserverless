@@ -1,12 +1,12 @@
 {
   "name": "@webserverless/security",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "lib/common/index.js",
   "typings": "lib/common/index.d.ts",
   "dependencies": {
     "@types/jsonwebtoken": "^8.3.2",
-    "@webserverless/core": "^0.0.6",
+    "@webserverless/core": "^0.0.7",
     "jsonwebtoken": "^8.5.1"
   },
   "publishConfig": {
@@ -45,7 +45,7 @@
     "docs": "webserverlessext docs"
   },
   "devDependencies": {
-    "@webserverless/ext-scripts": "^0.0.6"
+    "@webserverless/ext-scripts": "^0.0.7"
   },
   "nyc": {
     "extends": "../../configs/nyc.json"
