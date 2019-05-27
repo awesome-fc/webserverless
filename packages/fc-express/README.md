@@ -109,6 +109,7 @@ Server(
 ```
 
 2. 构造函数参数说明：
+
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | requestListener | (request: http.IncomingMessage, response: http.ServerResponse) => void | 是 | 被代理的 express 应用 |
@@ -116,12 +117,14 @@ Server(
 | binaryTypes | string[] | 否 | API 网关触发方式才有效，当 express 应用的响应头 content-type 符合 binaryTypes 中定义的任意规则，则返回给 API 网关的 isBase64Encoded 属性为 true |
 
 3. 成员方法
+
 | 方法 | 参数 | 返回值 | 说明 |
 | --- | --- | --- | --- |
 | proxy | (event, context, callback) | void | 当你的函数通过 API 网关触发，就需要使用 proxy 方法将函数计算的处理代理给 express 应用，参数对应着 API 网关类型的入口函数的参数 |
 | httpProxy | (request, response, context) | void | 当你的函数通过 http 触发器触发，就需要使用 httpProxy 方法将函数计算的处理代理给 express 应用，参数对应着 http 触发器类型的入口函数的参数 |
 
 4. 成员属性
+
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
 | rawServer | http.Server | 负责将请求转发 express 应用的底层代理服务对象 |
