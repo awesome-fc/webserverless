@@ -9,6 +9,7 @@ import { FCClient } from './client/fc-client';
 import { STSServer, stsPath } from '../common/sts/sts-protocol';
 import { ConfigProvider } from '../common/config-provider';
 import { ConfigProviderImpl } from './config-provider';
+import { RPC } from '../common/annotation/rpc-inject';
 
 export const CoreFrontendModule = new ContainerModule(bind => {
     bind(ClientProvider).toSelf().inSingletonScope();
@@ -26,5 +27,11 @@ export const CoreFrontendModule = new ContainerModule(bind => {
         ctx.container.get(FCClient).stsServer = stsServer;
         return stsServer;
     }).inSingletonScope();
+
+    bind(RPC).toDynamicValue(ctx => {
+        const namedMetadata = ctx.currentRequest.target.getNamedTag();
+        const path = namedMetadata!.value.toString();
+        return ProxyProvider.createProxy(ctx.container, path);
+    });
 
 });
