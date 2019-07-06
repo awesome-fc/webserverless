@@ -10,5 +10,5 @@ program
 
 const configPath = path.resolve(process.cwd(), '../webserverless.config.json');
 const config = fs.existsSync(configPath) ? require(configPath) : { backendType: 'http', frontendType: 'local'};
-depoy(null, path.resolve(process.cwd(), `src/backend/${config.backendType}-template.yml`));
+depoy(null, path.resolve(process.cwd(), `src/backend/template-${config.backendType}.yml`));
 

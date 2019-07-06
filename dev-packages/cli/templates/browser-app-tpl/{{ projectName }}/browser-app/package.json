@@ -16,6 +16,7 @@
     "build": "yarn build:backend && yarn build:frontend",
     "build:backend": "webpack --config webpack.backend.js",
     "build:frontend": "webpack --config webpack.frontend.js",
+    "config": "webserverless config",
     "deploy": "webserverless deploy",
     "start:backend": "node src/backend/server.js",
     "start:frontend": "webpack-dev-server -d --config webpack.frontend.js --mode development --open",

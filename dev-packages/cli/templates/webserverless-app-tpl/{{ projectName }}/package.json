@@ -7,6 +7,7 @@
     "start:backend": "cd browser-app && yarn start:backend",
     "start:frontend": "cd browser-app && yarn start:frontend",
     "start": "cd browser-app && yarn start",
+    "config": "cd browser-app && yarn config",
     "deploy": "cd browser-app && yarn deploy"
   },
   "devDependencies": {
