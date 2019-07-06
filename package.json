@@ -41,8 +41,8 @@
     "wdio-selenium-standalone-service": "0.0.12",
     "wdio-spec-reporter": "0.1.5",
     "webdriverio": "4.14.1",
-    "@webserverless/cli": "^0.1.0",
-    "@webserverless/ext-scripts": "^0.1.0"
+    "@webserverless/cli": "^0.1.1",
+    "@webserverless/ext-scripts": "^0.1.1"
   },
   "scripts": {
     "prepare": "yarn run build:clean",

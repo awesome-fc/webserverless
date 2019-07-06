@@ -11,7 +11,7 @@ npm install -g yarn                    # install yarn tool
 yarn build                             # build project
 yarn start:backend                     # start local backend for frontend
 yarn start:frontend                    # start loacl frontend
-yarn deploy                            # deploy project to cloud
+yarn deploy                            # deploy project to cloud, need to configure AK with yarn config
 ```
 
 ## Defining interface
