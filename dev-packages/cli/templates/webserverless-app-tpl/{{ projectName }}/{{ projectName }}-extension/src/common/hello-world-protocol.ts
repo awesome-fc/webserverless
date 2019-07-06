@@ -1,5 +1,3 @@
-export const helloWorldPath = '/services/helloworld';
-
 export const HelloWorldServer = Symbol('HelloWorldServer');
 
 export interface HelloWorldServer {

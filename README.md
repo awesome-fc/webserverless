@@ -6,24 +6,18 @@ Serverless based web development framework.
 
 ```bash
 npm install @webserverless/cli@next -g
-npm install -g yarn
-webserverless init demo
-cd demo
-yarn
-yarn build
-cd browser-app
-yarn
-yarn build
-yarn deploy
-yarn start
+webserverless init demo                # init template
+npm install -g yarn                    # install yarn tool
+yarn build                             # build project
+yarn start:backend                     # start local backend for frontend
+yarn start:frontend                    # start loacl frontend
+yarn deploy                            # deploy project to cloud
 ```
 
 ## Defining interface
 
 ```typescript
 // src/common/hello-world-protocol.ts
-export const helloWorldPath = '/services/helloworld';
-
 export const HelloWorldServer = Symbol('HelloWorldServer');
 
 export interface HelloWorldServer {
@@ -35,10 +29,10 @@ export interface HelloWorldServer {
 
 ```typescript
 // src/node/hello-world-server.ts
-import { injectable } from 'inversify';
+import { rpc } from '@webserverless/core/lib/common/annotation';
 import { HelloWorldServer } from '../common/hello-world-protocol';
 
-@injectable()
+@rpc(HelloWorldServer)
 export class HelloWorldServerImpl implements HelloWorldServer {
     say(): Promise<string> {
         return Promise.resolve('Hello world.');
@@ -50,44 +44,35 @@ export class HelloWorldServerImpl implements HelloWorldServer {
 
 ```typescript
 // src/node/demo-backend-module.ts
-import { ContainerModule } from 'inversify';
-import { HelloWorldServerImpl } from './hello-world-server';
-import { bindServer } from '@webserverless/core/lib/node/bind-server';
-import { helloWorldPath, HelloWorldServer } from '../common/hello-world-protocol';
-
-export default new ContainerModule(bind => {
-    bindServer(bind, helloWorldPath, HelloWorldServer, HelloWorldServerImpl);
-});
-```
-
-## Binding client proxy
-
-```typescript
-// src/browser/demo-frontend-module.ts
-import { ContainerModule } from 'inversify';
-import { bindServer } from '@webserverless/core/lib/browser/bind-server';
-import { HelloWorldServer, helloWorldPath } from '../common/hello-world-protocol';
-
-export default new ContainerModule(bind => {
-    bindServer(bind, helloWorldPath, HelloWorldServer);
-});
+export { HelloWorldServerImpl } from './hello-world-server';
+import { buildProviderModule } from 'inversify-binding-decorators';
+export default buildProviderModule()
 ```
 
 ## Using client proxy
 
 ```typescript
 // src/browser/hello-world-service.ts
-import { injectable, inject } from "inversify";
+import { rpcInject, component } from '@webserverless/core/lib/common/annotation';
 import { HelloWorldServer } from "../common/hello-world-protocol";
 
-@injectable()
+@component(HelloWorldService)
 export class HelloWorldService {
 
     constructor(
-        @inject(HelloWorldServer) protected readonly helloWorldServer: HelloWorldServer
+        @rpcInject(HelloWorldServer) protected readonly helloWorldServer: HelloWorldServer
     ) {}
     
 }
+```
+
+## Binding service
+
+```typescript
+// src/browser/demo-frontend-module.ts
+export { HelloWorldService } from './hello-world-service';
+import { buildProviderModule } from 'inversify-binding-decorators';
+export default buildProviderModule()
 ```
 
 

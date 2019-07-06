@@ -54,7 +54,8 @@
     "test:webserverless": "lerna run test --scope \"@webserverless/!(example-)*\" --parallel",
     "watch": "lerna run watch --scope \"@webserverless/!(example-)*\" --parallel",
     "publish": "yarn && yarn test && lerna publish",
-    "next:publish": "lerna publish --exact --canary=next --npm-tag=next --yes"
+    "next:publish": "lerna publish --exact --canary=next --npm-tag=next --yes",
+    "init": "webserverless init demo"
   },
   "workspaces": [
     "dev-packages/*",

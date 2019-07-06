@@ -9,36 +9,29 @@ Install [nvm](https://github.com/creationix/nvm#install-script).
 
 Install npm and node.
 
-    nvm install 8
-    nvm use 8
+```bash
+nvm install 8
+nvm use 8
+```
 
 Install yarn.
 
-    npm install -g yarn
+```bash
+npm install -g yarn
+```
 
-## Running the browser example
-
-    yarn build
-    cd browser-app
-    yarn build
-    yarn deploy
-    yarn start
+## Running the {{ projectName }}
+```bash
+yarn build
+yarn start:backend  # start backend
+yarn start:frontend # start frontend, or run `yarn start`
+```
 
 Open http://localhost:8000 in the browser.
 
-## Developing with the example
+## Developing with {{ projectName }}
 
-Start watching of {{ projectName }}-extension.
+```bash
+yarn deploy
+```
 
-    cd {{ projectName }}-extension
-    yarn watch
-
-## Publishing {{ projectName }}-extension
-
-Create a npm user and login to the npm registry, [more on npm publishing](https://docs.npmjs.com/getting-started/publishing-npm-packages).
-
-    npm login
-
-Publish packages with lerna to update versions properly across local packages, [more on publishing with lerna](https://github.com/lerna/lerna#publish).
-
-    npx lerna publish

@@ -3,7 +3,7 @@
     "frontendType": "local",
     "defaultServiceName": "webserverless-service",
     "defaultFunctionName": "webserverless",
-    "defalutHttpTriggerName": "http-webserverless",
+    "defaultHttpTriggerName": "http-webserverless",
     "localEndpoint": "http://localhost:8080",
     "remoteEndpoint":"https://{{ profile.accountId }}.{{ profile.defaultRegion }}.fc.aliyuncs.com/2016-08-15/proxy/webserverless-service/webserverless",
     "apiGatewayGroupName": "webserverless-group"
