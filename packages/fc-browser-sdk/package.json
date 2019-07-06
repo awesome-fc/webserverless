@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/muxiangqiu/webserverless/issues"
   },
-  "homepage": "https://github.com/muxiangqiu/webserverless",
+  "homepage": "https://github.com/muxiangqiu/webserverless/tree/master/packages/fc-express",
   "files": [
     "lib",
     "src"

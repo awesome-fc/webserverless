@@ -6,7 +6,6 @@ import { ServiceDispatcher } from './jsonrpc/service-dispatcher';
 import { ClientProvider, Client } from './client';
 import { HttpClient } from './client/http-client';
 import { FCClient } from './client/fc-client';
-import { STSServer, stsPath } from '../common/sts/sts-protocol';
 import { ConfigProvider } from '../common/config-provider';
 import { ConfigProviderImpl } from './config-provider';
 import { RPC } from '../common/annotation/rpc-inject';
@@ -20,13 +19,6 @@ export const CoreFrontendModule = new ContainerModule(bind => {
     bind(ConnnectionFactory).to(ConnnectionFactoryImpl).inSingletonScope();
     bind(ProxyProvider).toSelf().inSingletonScope();
     bind(ConfigProvider).to(ConfigProviderImpl).inSingletonScope();
-
-    bind(STSServer).toDynamicValue(ctx => {
-        const provider = ctx.container.get(ProxyProvider);
-        const stsServer = provider.createProxy<STSServer>(stsPath);
-        ctx.container.get(FCClient).stsServer = stsServer;
-        return stsServer;
-    }).inSingletonScope();
 
     bind(RPC).toDynamicValue(ctx => {
         const namedMetadata = ctx.currentRequest.target.getNamedTag();

@@ -5,8 +5,7 @@ const { Container } = require('inversify');
 const { CoreFrontendModule } = require('@webserverless/core/lib/browser');
 const { CONFIG } = require('@webserverless/core/lib/common/config-provider');
 const config = process.env;
-const { STSServer } = require('@webserverless/core/lib/common/sts/sts-protocol');
-// const { HelloWorldService } = require('demo-extension/lib/browser/hello-world-service');
+const { HelloWorldService } = require('{{ projectName }}-extension/lib/browser/hello-world-service');
 
 
 const container = new Container();
@@ -21,9 +20,7 @@ function load(raw) {
 }
 
 function start() {
-  const stsServer = container.get(STSServer);
-  stsServer.getConfig().then(data => console.log(data));
-  // const helloWorldService = container.get(HelloWorldService);
+  const helloWorldService = container.get(HelloWorldService);
 }
 
 module.exports = Promise.resolve()
