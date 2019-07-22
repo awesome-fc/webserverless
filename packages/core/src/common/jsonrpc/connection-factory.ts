@@ -1,5 +1,5 @@
 import { MessageConnection, createMessageConnection, Logger } from 'vscode-jsonrpc';
-import { Channel } from './channel';
+import { Channel } from './channel-protocol';
 import { ChannelMessageReader } from './reader';
 import { ChannelMessageWriter } from './writer';
 import { injectable } from 'inversify';

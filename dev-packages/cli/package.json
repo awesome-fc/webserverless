@@ -33,9 +33,12 @@
     "docs": "echo 'skip'"
   },
   "dependencies": {
-    "@alicloud/fun": "^2.11.0",
     "commander": "^2.20.0",
     "find": "^0.3.0",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "webpack": "^4.36.1"
+  },
+  "devDependencies": {
+    "@types/webpack": "^4.32.0"
   }
 }

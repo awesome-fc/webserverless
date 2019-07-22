@@ -1,7 +1,6 @@
 import { Context } from './context';
 import { Prioritizeable } from '../../common/prioritizeable';
 import { injectable, multiInject, optional, inject } from 'inversify';
-import { ResponseErrorLiteral, ErrorCodes, ResponseMessage } from 'vscode-jsonrpc/lib/messages';
 import { ChannelManager } from './channel-manager';
 
 export const ErrorHandler = Symbol('ErrorHandler');
@@ -25,35 +24,13 @@ export abstract class AbstractErrorHandler implements ErrorHandler {
     }
 
     async handle(ctx: Context, err: Error): Promise<void> {
-        const responseMessage = await this.getErrorRespanseMessage(ctx, err);
-        try {
-            const channel = await this.channelManager.getChannel(ctx);
-            channel.send(JSON.stringify(responseMessage));
-        } catch (error) {
-            ctx.getCallback()(error, undefined);
-        }
+        console.error(err);
+        ctx.handleError(err);
         await this.doHandle(ctx, err);
     }
 
     doHandle(ctx: Context, err: Error): Promise<void> {
         return Promise.resolve();
-    }
-
-    protected getErrorRespanseMessage(ctx: Context, err: Error): Promise<ResponseMessage> {
-        const message = ctx.message;
-        const responseMessage = <ResponseMessage>{
-            id: JSON.parse(message.content).id,
-            error: <ResponseErrorLiteral<Error>> {
-                code: this.getErrorCode(),
-                message: err.message,
-                data: err
-            }
-        };
-        return Promise.resolve(responseMessage);
-    }
-
-    protected getErrorCode(): number {
-        return ErrorCodes.UnknownErrorCode;
     }
 }
 

@@ -1,9 +1,9 @@
-import { Client } from './client-provider';
 import { Client as InnerClient } from '@webserverless/fc-browser-sdk/lib/browser/client';
-import { injectable, inject } from 'inversify';
-import { Context } from '../jsonrpc/service-dispatcher';
-import { STSServer } from '../../common/sts/sts-protocol';
-import { ConfigProvider } from '../../common/config-provider';
+import { injectable, } from 'inversify';
+import { STSServer } from '../common/sts-protocol';
+import { HttpProxyCreator } from '@webserverless/core/lib/browser';
+import { HttpChannel } from '@webserverless/core/lib/common/jsonrpc/http-channel';
+import { Channel } from '@webserverless/core/lib/common/jsonrpc/channel-protocol';
 
 export interface ServicePath {
     service: string
@@ -12,26 +12,23 @@ export interface ServicePath {
 }
 
 @injectable()
-export class FCClient implements Client {
+export class FCProxyCreator extends HttpProxyCreator {
 
     protected client: InnerClient;
     stsServer: STSServer;
 
-    constructor(
-        @inject(ConfigProvider) protected readonly configProvider: ConfigProvider
-    ) {
+    protected createChannel(id: number, path: string): Channel {
+        const channel = new HttpChannel(id, async content => {
+            const client = await this.getOrCreateClient();
+            const servicePath = await this.parse(path);
+            const result = await client.invokeFunction(servicePath.service, servicePath.function, content);
+            channel.handleMessage(JSON.parse(result.data));
+        }, path);
+        return channel;
     }
 
-    async send(ctx: Context): Promise<void> {
-        const { path, content, channel } = ctx;
-        const client = await this.getOrCreateClient();
-        const servicePath = await this.parse(path);
-        const result = await client.invokeFunction(servicePath.service, servicePath.function, content);
-        channel.handleMessage(JSON.parse(result.data));
-    }
-
-    support(ctx: Context): number {
-        return ctx.path.startsWith('fc:') ? 500 : 0;
+    support(path: string): number {
+        return path.startsWith('fc:') ? 600 : 0;
     }
 
     protected async createClient() {

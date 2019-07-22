@@ -1,83 +1,11 @@
-import { Dispatcher } from '../../common/jsonrpc/dispatcher-protocol';
-import { Context, Callback } from './context';
+import { Context } from './context';
 import { inject, injectable } from 'inversify';
-import { Channel, ConnnectionFactory } from '../../common/jsonrpc';
-import { MiddlewareProvider, Middleware } from '../middleware';
-import * as getRawBody from 'raw-body';
+import { ConnnectionFactory } from '../../common/jsonrpc';
+import { MiddlewareProvider, compose } from '../middleware';
 import { ErrorHandlerProvider } from './error-hander-provider';
 import { ChannelManager } from './channel-manager';
-
-export class ApiGatewayContext extends Context {
-    readonly request: any;
-
-    constructor(protected event: string, protected context: any, protected callback: Callback) {
-        super(context);
-        this.request = JSON.parse(event);
-    }
-
-    getEvent(): Promise<string> {
-        if (this.request.isBase64Encoded) {
-            return Promise.resolve(new Buffer(this.request.body).toString('base64'));
-        }
-        return Promise.resolve(this.request.body);
-    }
-    getCallback(): Callback {
-        return (err: Error, data: any) => {
-            if (err) {
-                this.callback(err, undefined);
-            } else {
-                this.callback(undefined, {
-                    isBase64Encoded: false,
-                    statusCode: 200,
-                    body: data
-                });
-            }
-        };
-    }
-}
-
-export class HttpContext extends Context {
-    readonly request: any;
-    readonly response: any;
-
-    constructor(request: any, response: any, context: Context) {
-        super(context);
-        this.request = request;
-        this.response = response;
-    }
-
-    async getEvent(): Promise<string> {
-        return (await getRawBody(this.request)).toString();
-    }
-    getCallback(): Callback {
-        return (err: Error, data: any) => {
-            if (err) {
-                this.response.statusCode = 500;
-                this.response.send(err.message);
-            } else {
-                this.response.send(data);
-            }
-        };
-    }
-}
-export class EventContext extends Context {
-    readonly event: string;
-    readonly callback: (err: Error, data: any) => void;
-
-    constructor(event: string, context: any, callback: Callback) {
-        super(context);
-        this.event = event;
-        this.callback = callback;
-    }
-
-    getEvent(): Promise<string> {
-        return Promise.resolve(this.event);
-    }
-
-    getCallback(): Callback {
-        return this.callback;
-    }
-}
+import { Dispatcher } from './dispatcher-protocol';
+import { Channel } from '../../common/jsonrpc/channel-protocol';
 
 @injectable()
 export class DispatcherImpl implements Dispatcher<Context> {
@@ -92,22 +20,10 @@ export class DispatcherImpl implements Dispatcher<Context> {
 
     async dispatch(ctx: Context): Promise<void> {
         try {
-            try {
-                const body = await ctx.getEvent();
-                ctx.message = JSON.parse(body);
-            } catch (err) {
-                ctx.getCallback()(new Error('Request data format error: ' + err), undefined);
-            }
-            Context.setCurrent(ctx);
-            const middleware = this.compose();
+            const middleware = compose(this.middlewareProvider.provide());
             await middleware(ctx, {
                 handle: async (c: Context, next: () => Promise<void>) => {
-                    try {
-                        await this.handleMessage(c);
-                        return Promise.resolve();
-                    } catch (err) {
-                        return Promise.reject(err);
-                    }
+                    await this.handleMessage(c);
                 },
                 priority: 0
             });
@@ -131,33 +47,6 @@ export class DispatcherImpl implements Dispatcher<Context> {
     }
 
     protected async handleMessage(ctx: Context): Promise<void> {
-        const channel = await this.channelManager.getChannel(ctx);
-        channel.handleMessage(ctx.message);
-    }
-
-    protected compose() {
-        return (ctx: Context, next: Middleware) => {
-            let index = -1;
-            const middlewares = this.middlewareProvider.provide();
-            const dispatch = (i: number): Promise<void> => {
-                if (i <= index) {
-                    return Promise.reject(new Error('next() called multiple times'));
-                }
-                index = i;
-                let middleware = middlewares[i];
-                if (i === middlewares.length) {
-                    middleware = next;
-                }
-                if (!middleware) {
-                    return Promise.resolve();
-                }
-                try {
-                    return Promise.resolve(middleware.handle(ctx, (): Promise<void> => dispatch(i + 1)));
-                } catch (err) {
-                    return Promise.reject(err);
-                }
-            };
-            return dispatch(0);
-        };
+        this.channelManager.handleChannels(ctx);
     }
 }

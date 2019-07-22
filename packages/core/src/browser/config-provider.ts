@@ -3,10 +3,10 @@ import { injectable } from 'inversify';
 
 @injectable()
 export class ConfigProviderImpl implements ConfigProvider {
-    get<T>(key: string, defaultValue?: T): Promise<T> {
+    get<T>(key: string, defaultValue?: T): T {
         const globelObj = window as any;
         const value = globelObj[CONFIG][key] as any;
-        return Promise.resolve(value || defaultValue);
+        return value || defaultValue;
     }
 
 }

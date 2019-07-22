@@ -5,13 +5,13 @@ import { ProxyProvider } from '@webserverless/core/lib/browser';
 export default new ContainerModule(bind => {
 
     bind(UserServer).toDynamicValue(ctx => {
-        const provider = ctx.container.get(ProxyProvider);
-        return provider.createProxy<UserServer>(userPath);
+        const provider = ctx.container.get<ProxyProvider>(ProxyProvider);
+        return provider.provide<UserServer>(userPath);
     }).inSingletonScope();
 
     bind(AuthServer).toDynamicValue(ctx => {
-        const provider = ctx.container.get(ProxyProvider);
-        return provider.createProxy<AuthServer>(authPath);
+        const provider = ctx.container.get<ProxyProvider>(ProxyProvider);
+        return provider.provide<AuthServer>(authPath);
     }).inSingletonScope();
 
 });

@@ -1,12 +1,12 @@
-import { Context, Callback } from './context';
+import { Context } from './context';
 import { injectable, multiInject, optional, inject } from 'inversify';
-import { ConnectionHandler, Channel, ConnnectionFactory, ConsoleLogger } from '../../common';
+import { ConnectionHandler, ConnnectionFactory, ConsoleLogger } from '../../common';
+import { Channel } from '../../common/jsonrpc/channel-protocol';
 
+// tslint:disable:no-any
 @injectable()
 export class ChannelManager {
 
-    protected channels = new Map<number, Channel>();
-    protected callbacks = new Map<number, Callback>();
     protected _handlers = new Map<string, ConnectionHandler>();
 
     constructor(
@@ -19,41 +19,23 @@ export class ChannelManager {
         }
      }
 
-    getChannel(ctx: Context): Promise<Channel> {
-        const { id, path } = ctx.message;
-        if (path) {
-            let channel = this.channels.get(id);
-            if (!channel) {
-                this.callbacks.set(id, ctx.getCallback());
-                channel = this.createChannel(id, (err, data) => this.callbacks.get(id)!(err, data));
+    async handleChannels(ctx: Context): Promise<void> {
+        ctx.handleChannels(async () => {
+            const { id, path } = (await ctx.getMessage() as any);
+            if (path) {
                 const handler = this._handlers.get(this.getRealPath(path));
                 if (handler) {
-                    try {
-                        handler.onConnection(this.connnectionFactory.create(channel, new ConsoleLogger()));
-                        this.channels.set(id, channel);
-                    } catch (err) {
-                        return Promise.reject(err);
-                    }
-                } else {
-                    return Promise.reject(new Error('Cannot find a service for the path: ' + path));
+                    const channel = await ctx.createChannel(id);
+                    handler.onConnection(this.connnectionFactory.create(channel, new ConsoleLogger()));
+                    return channel;
                 }
-            } else {
-                this.callbacks.set(id, ctx.getCallback());
             }
-            return Promise.resolve(channel);
-        } else {
-            return Promise.reject(Error('Cannot find a service for the path is empty'));
-        }
+            throw new Error('Cannot find a service for the path: ' + path);
+        });
     }
 
     protected getRealPath(path: string): string {
         return <string>path.split(':').pop();
-    }
-
-    protected createChannel(id: number, callback: Callback) {
-        return new Channel(id, content => {
-            callback(undefined, content);
-        });
     }
 
 }

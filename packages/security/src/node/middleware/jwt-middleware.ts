@@ -5,7 +5,9 @@ import { ConfigProvider } from '@webserverless/core/lib/common/config-provider';
 
 export const TOKEN_DECODED = 'tokenDecoded';
 
-export const JWT_SECRET_OR_PUBLIC_KEY = 'to.jwt.secretOrPublicKey';
+export const JWT_SECRET_OR_PUBLIC_KEY = 'security.jwt.secretOrPublicKey';
+
+// tslint:disable:no-any
 
 @injectable()
 export class JWTMiddleWare implements Middleware {
@@ -14,7 +16,7 @@ export class JWTMiddleWare implements Middleware {
     protected readonly configProvider: ConfigProvider;
 
     async handle(ctx: Context, next: () => Promise<void>): Promise<void> {
-        const token = ctx.message.token;
+        const token = (await ctx.getMessage() as any).token;
         if (token) {
             Context.setAttr(TOKEN_DECODED, verify(token, await this.configProvider.get<string>(JWT_SECRET_OR_PUBLIC_KEY, '123456')));
         } else {

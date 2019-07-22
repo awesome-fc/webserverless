@@ -3,9 +3,9 @@ import { injectable } from 'inversify';
 
 @injectable()
 export class ConfigProviderImpl implements ConfigProvider {
-    get<T>(key: string, defaultValue?: T): Promise<T> {
+    get<T>(key: string, defaultValue?: T): T {
         const value = process.env[key] as any;
-        return Promise.resolve(value || defaultValue);
+        return value || defaultValue;
     }
 
 }

@@ -1,7 +1,6 @@
 import { ContainerModule } from 'inversify';
 import { ConnnectionFactory, ConnnectionFactoryImpl } from '../common/jsonrpc/connection-factory';
-import { Dispatcher } from '../common/jsonrpc/dispatcher-protocol';
-import { DispatcherImpl, DefaultErrorHandler, ErrorHandlerProvider, ErrorHandler } from './jsonrpc';
+import { DispatcherImpl, DefaultErrorHandler, ErrorHandlerProvider, ErrorHandler, Dispatcher } from './jsonrpc';
 import { MiddlewareProvider } from './middleware';
 import { ConfigProvider } from '../common/config-provider';
 import { ConfigProviderImpl } from './config-provider';

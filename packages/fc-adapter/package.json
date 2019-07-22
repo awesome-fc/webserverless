@@ -1,0 +1,54 @@
+{
+  "name": "@webserverless/fc-adapter",
+  "version": "0.1.1",
+  "description": "",
+  "main": "lib/common/index.js",
+  "typings": "lib/common/index.d.ts",
+  "dependencies": {
+    "@webserverless/core": "^0.1.1",
+    "@alicloud/pop-core": "^1.7.6",
+    "@webserverless/fc-browser-sdk": "^0.1.1",
+    "raw-body": "^2.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "webserverless-extension"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muxiangqiu/webserverless.git"
+  },
+  "bugs": {
+    "url": "https://github.com/muxiangqiu/webserverless/issues"
+  },
+  "homepage": "https://github.com/muxiangqiu/webserverless",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "webserverlessext clean",
+    "build": "webserverlessext build",
+    "watch": "webserverlessext watch",
+    "test": "webserverlessext test",
+    "docs": "webserverlessext docs"
+  },
+  "webserverlessExtension": {
+    "frontends": [
+      "lib/browser/fc-adapter-frontend-module"
+    ],
+    "backends": [
+      "lib/node/fc-adapter-backend-module"
+    ]
+  },
+  "devDependencies": {
+    "@webserverless/ext-scripts": "^0.1.1"
+  },
+  "nyc": {
+    "extends": "../../configs/nyc.json"
+  }
+}

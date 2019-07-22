@@ -1,38 +1,59 @@
-import { Message } from '../../common/jsonrpc';
+import * as requestContext from 'express-http-context';
+import { Channel } from '../../common/jsonrpc/channel-protocol';
 
-export type Callback = (err: Error | undefined, data: any) => void;
+export enum AttributeScope { App, Request }
 
-export abstract class Context {
+export const CURRENT_CONTEXT_REQUEST_KEY = 'CurrentContextRequest';
 
-    readonly innerContext: any;
+const appAttrs = new Map<string, any>();
 
-    message: Message;
+export interface Context {
 
-    readonly attrs = new Map<string, any>();
+    getMessage(): Promise<Channel.Message>;
 
-    private static _current: Context;
+    handleError(err: Error): Promise<void>;
 
-    constructor(innerContext: any) {
-        this.innerContext = innerContext;
+    handleMessage(message: string): Promise<void>;
+
+    createChannel(id: number): Promise<Channel>
+
+    handleChannels(channelFactory: () => Promise<Channel>): Promise<void>;
+
+}
+
+export namespace Context {
+
+    export function run(fn: (...args: any[]) => void) {
+        requestContext.ns.run(fn);
     }
 
-    static setCurrent(current: Context) {
-        this._current = current;
+    export function setCurrent(context: Context) {
+        requestContext.set(CURRENT_CONTEXT_REQUEST_KEY, context);
     }
 
-    static getCurrent<T>(): T {
-        return this._current as any;
+    export function getCurrent<T extends Context>(): T {
+        return requestContext.get(CURRENT_CONTEXT_REQUEST_KEY);
     }
 
-    static setAttr(key: string, value: any) {
-        this._current.attrs.set(key, value);
+    export function setAttr(key: string, value: any, scope: AttributeScope = AttributeScope.Request) {
+        if (scope === AttributeScope.Request) {
+            requestContext.set(key, value);
+        } else {
+            appAttrs.set(key, value);
+        }
     }
 
-    static getAttr<T>(key: string): T {
-        return this._current.attrs.get(key);
+    export function getAttr<T>(key: string, scope?: AttributeScope): T {
+        if (scope) {
+            if (scope === AttributeScope.Request) {
+                return requestContext.get(key);
+            } else {
+                return appAttrs.get(key);
+            }
+        } else {
+            const value = requestContext.get(key);
+            return value ? value : appAttrs.get(key);
+        }
     }
 
-    abstract getEvent(): Promise<string>;
-
-    abstract getCallback(): Callback;
 }
