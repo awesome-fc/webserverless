@@ -15,7 +15,7 @@ export class Server {
         this.apiGatewayProxy = new ApiGatewayProxy(this);
         this.httpTriggerProxy = new HttpTriggerProxy(this);
         this.rawServer = http.createServer(requestListener);
-        // 设置 server 的超时时间为 600秒，与函数计算最大超时时间相同
+        // Set the server's timeout to 600 seconds, which is the same as the FC's max timeout.
         this.rawServer.setTimeOut(600 * 1000);
 
         this.socketPathSuffix = this.getRandomString();
