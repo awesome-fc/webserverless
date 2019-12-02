@@ -1,5 +1,3 @@
 --require ignore-styles
---require monaco-languageclient/lib/register-vscode
---require reflect-metadata/Reflect
 --reporter spec
 --watch-extensions js
