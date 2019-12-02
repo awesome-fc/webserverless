@@ -1,6 +1,6 @@
 # Webserverless - FC Browser SDK extension
 
-`fc-browser-sdk` 可以在浏览器端使用的函数计算 SDK，在浏览器总使用本包，会存在 AK 泄露的风险，万不可使用主账号的 AK。
+`fc-browser-sdk` 可以在浏览器端使用的函数计算 SDK，在浏览器中使用本包，会存在 AK 泄露的风险，万不可使用主账号的 AK。
 
 ## 使用方式
 
