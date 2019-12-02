@@ -16,7 +16,7 @@ export class Server {
         this.httpTriggerProxy = new HttpTriggerProxy(this);
         this.rawServer = http.createServer(requestListener);
         // Set the server's timeout to 600 seconds, which is the same as the FC's max timeout.
-        this.rawServer.setTimeOut(600 * 1000);
+        this.rawServer.setTimeout(600 * 1000);
 
         this.socketPathSuffix = this.getRandomString();
         this.binaryTypes = binaryTypes ? binaryTypes.slice() : [];

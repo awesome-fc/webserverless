@@ -74,22 +74,18 @@ export class Client {
         headers = Object.assign(this.buildHeaders(), this.config.headers, headers);
         let postBody;
         if (body) {
-            let buff;
-            if (Buffer.isBuffer(body)) {
-                buff = body;
-                headers['content-type'] = 'application/octet-stream';
-            } else if (typeof body === 'string') {
-                buff = new Buffer(body, 'utf8');
+            let str: string;
+            if (typeof body === 'string') {
+                str = body;
                 headers['content-type'] = 'application/octet-stream';
             } else {
-                buff = new Buffer(JSON.stringify(body), 'utf8');
+                str = JSON.stringify(body);
                 headers['content-type'] = 'application/json';
             }
-            const digest = MD5(buff.toString()).toString(enc.Hex);
-            const md5 = new Buffer(digest, 'utf8').toString('base64');
-            headers['content-length'] = buff.length;
+            const digest = MD5(str).toString(enc.Hex);
+            const md5 = enc.Base64.stringify(enc.Utf8.parse(digest));
             headers['content-md5'] = md5;
-            postBody = buff;
+            postBody = str;
         }
 
         let queriesToSign;
@@ -678,7 +674,7 @@ export class Client {
     }
 
     static signString(source: string, secret: string) {
-        const buff = HmacSHA256(new Buffer(source, 'utf8').toString(), secret);
+        const buff = HmacSHA256(enc.Utf8.parse(source), secret);
         return buff.toString(enc.Base64);
     }
 

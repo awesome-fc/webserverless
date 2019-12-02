@@ -1,1 +1,0 @@
-# Webserverless - Security extension

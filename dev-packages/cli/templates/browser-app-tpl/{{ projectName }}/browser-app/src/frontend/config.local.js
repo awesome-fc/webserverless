@@ -1,1 +1,0 @@
-window['endpoint'] = '{{ config.localEndpoint }}';
