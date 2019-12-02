@@ -138,7 +138,7 @@ export class Client {
      * POST 请求
      *
      * @param {String} path 请求路径
-     * @param {Buffer|String|Object} body 请求中的 body 部分
+     * @param {any} body 请求中的 body 部分
      * @param {Object} headers 请求中的自定义 headers 部分
      * @param {Object} queries 请求中的自定义 queries 部分
      * @return {Promise} 返回 Response
@@ -151,7 +151,7 @@ export class Client {
      * PUT 请求
      *
      * @param {String} path 请求路径
-     * @param {Buffer|String|Object} body 请求中的 body 部分
+     * @param {any} body 请求中的 body 部分
      * @param {Object} headers 请求中的自定义 headers 部分
      * @return {Promise} 返回 Response
      */
@@ -377,11 +377,7 @@ export class Client {
      * @param {String} qualifie
      * @return {Promise} 返回 Object(包含headers和data属性[返回Function的执行结果])
      */
-    invokeFunction(serviceName: string, functionName: string, event: string | Buffer, headers: any = {}, qualifier?: string, opts: any = {}) {
-        if (event && typeof event !== 'string' && !Buffer.isBuffer(event)) {
-            throw new TypeError('"event" must be String or Buffer');
-        }
-
+    invokeFunction(serviceName: string, functionName: string, event: any, headers: any = {}, qualifier?: string, opts: any = {}) {
         const path = `/services/${this.getServiceName(serviceName, qualifier)}/functions/${functionName}/invocations`;
         return this.post(path, event, headers, undefined, opts);
     }
