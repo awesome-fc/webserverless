@@ -94,6 +94,9 @@ module.exports.handler = async (req, res, context) => {
 
 我们只需要按照 express 方式设置好 response 的响应头，@webserverless/fc-express 会把该响应头透传出来，在浏览器可以获取透传出来的响应头。
 
+*特殊响应头*
+- `x-fc-express-is-body-raw`: 设置该参数为 `true` 时 `response.body` 返回 `Buffer`，该参数不透传
+
 <a name="XDJmA"></a>
 #### Server 说明
 @webserverless/fc-express 包导出了一个 Server 类，Server 负责构建代理服务，转发请求到 express 应用。
@@ -164,7 +167,7 @@ module.exports.handler = function(event, context, callback) {
 };
 ```
 
-eventContext 中间件之所以能解析到 event 和 context 两个参数，是因为我们会将这两个参数序列化后，通过请求头透传给了 express 应用的 reques 对象。<br />eventContext 中间件提供了一个配置参数 options，options 参数是选填的，其中包含了两个属性 reqPropKey 和 deleteHeaders：
+eventContext 中间件之所以能解析到 event 和 context 两个参数，是因为我们会将这两个参数序列化后，通过请求头透传给了 express 应用的 request 对象。<br />eventContext 中间件提供了一个配置参数 options，options 参数是选填的，其中包含了两个属性 reqPropKey 和 deleteHeaders：
 
 | 参数 | 类型 | 默认值 | 必填 | 说明 |
 | --- | --- | --- | --- | --- |
