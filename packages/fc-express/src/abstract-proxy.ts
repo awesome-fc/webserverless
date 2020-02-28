@@ -1,4 +1,4 @@
-import { Proxy, Resolver, Context, CONTEXT_HEADER_NAME } from './proxy-protocol';
+import { Proxy, Resolver, Context, CONTEXT_HEADER_NAME, IS_BODY_RAW_HEADER_NAME } from './proxy-protocol';
 import { Server } from './server';
 import * as http from 'http';
 import * as isType from 'type-is';
@@ -72,7 +72,15 @@ export abstract class AbstractProxy<T extends Context> implements Proxy<T> {
                 const headers = this.getResponseHeaders(response);
                 const contentType = this.getContentType({ contentTypeHeader: headers['content-type'] });
                 const isBase64Encoded = this.isContentTypeBinaryMimeType({ contentType, binaryMimeTypes: this.server.binaryTypes });
-                const body = bodyBuffer.toString(isBase64Encoded ? 'base64' : 'utf8');
+
+                let body: Buffer | string;
+                if (headers[IS_BODY_RAW_HEADER_NAME]) {
+                    body = bodyBuffer;
+                    delete headers[IS_BODY_RAW_HEADER_NAME];
+                } else {
+                    body = bodyBuffer.toString(isBase64Encoded ? 'base64' : 'utf8');
+                }
+
                 const successResponse = { statusCode, body, headers, isBase64Encoded };
 
                 resolver(successResponse);

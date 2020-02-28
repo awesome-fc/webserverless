@@ -53,7 +53,7 @@ export class Server {
         this.httpTriggerProxy.handle({ request, response, context });
     }
 
-    startServer () {
+    startServer() {
         return this.rawServer.listen(this.getSocketPath());
     }
 

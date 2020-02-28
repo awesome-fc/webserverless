@@ -1,5 +1,6 @@
 export const EVENT_HEADER_NAME = 'x-fc-express-event';
 export const CONTEXT_HEADER_NAME = 'x-fc-express-context';
+export const IS_BODY_RAW_HEADER_NAME = 'x-fc-express-is-body-raw';
 
 export type Callback = (err?: Error, data?: any) => void;
 
